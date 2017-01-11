@@ -1,0 +1,12 @@
+TODO:
+	
+	LÖSNING:
+		Lätta armar/ben så att mousejoint kan dra i armar och ben men kroppen är för tung för  att följa med. Lagom gräns
+	
+		OM INGEN HAND/FOT ÄR STATIC, FALL!!!!
+		
+	
+	Survival 
+	Spawn inte fler grepp på samma plats
+	
+	

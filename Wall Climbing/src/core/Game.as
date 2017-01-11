@@ -1,10 +1,13 @@
 package core {
 	
+	import states.IState;
+	import states.Play;
+	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
 	public class Game extends Sprite {
-		private var currentState:Play = null;
+		private var _currentState:IState;
 		
 		public function Game() {
 			if (stage) { 
@@ -16,17 +19,29 @@ package core {
 		
 		private function init(e:Event = null):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
 			
-			currentState = new Play();
-			addChild(Sprite(currentState));
-			currentState.init();
+			Assets.init();
+			
+			_currentState = new Play();
+			addChild(Sprite(_currentState));
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
-		private function onEnterFrame(e:Event):void {
-			currentState.update();
+		public function onEnterFrame(e:Event):void {
+			var newState:IState = _currentState.update();
+			if (newState != null) {
+				setState(newState);
+			}
+		}
+		
+		private function setState(state:IState):void {
+			if (_currentState != null) {
+				_currentState.destroy();
+				removeChild(_currentState as DisplayObject);
+			}
+			_currentState = state;
+			addChild(state as DisplayObject);
 		}
 	}
 }
