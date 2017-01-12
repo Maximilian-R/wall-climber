@@ -80,23 +80,23 @@ package gameobjects {
 			var torso2:b2Body = setupBox(torsoWitdh, torsoHeight, startX, torso1.GetPosition().y + torsoOverlap, Assets.RIBS_2_TEXTURE, false);
 			var torso3:b2Body = setupBox(torsoWitdh, torsoHeight, startX, torso2.GetPosition().y + torsoOverlap, Assets.RIBS_3_TEXTURE, false);
 			
-			var upperLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, torso1.GetPosition().y - shoulders, Assets.LEG_TEXTURE, false);
-			var upperRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, torso1.GetPosition().y - shoulders, Assets.LEG_TEXTURE, false);
-			var lowerLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.LEG_TEXTURE, false);
-			var lowerRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.LEG_TEXTURE, false);
+			var upperLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, torso1.GetPosition().y - shoulders, Assets.UPPER_ARM_TEXTURE, false);
+			var upperRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, torso1.GetPosition().y - shoulders, Assets.UPPER_ARM_TEXTURE, false);
+			var lowerLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.LOWER_ARM_TEXTURE, false);
+			var lowerRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.LOWER_ARM_TEXTURE, false);
 			
 			
 			
-			var upperLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, torso3.GetPosition().y + hipsMargin, Assets.LEG_TEXTURE, false);
-			var upperRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, torso3.GetPosition().y + hipsMargin, Assets.LEG_TEXTURE, false);
-			var lowerLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.LEG_TEXTURE, false);
-			var lowerRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.LEG_TEXTURE, false);
+			var upperLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, torso3.GetPosition().y + hipsMargin, Assets.UPPER_LEG_TEXTURE, false);
+			var upperRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, torso3.GetPosition().y + hipsMargin, Assets.UPPER_LEG_TEXTURE, false);
+			var lowerLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.LOWER_LEG_TEXTURE, false);
+			var lowerRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.LOWER_LEG_TEXTURE, false);
 			
 			
 			leftHand = setupBox(handWidth, handWidth, startX - armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.HAND_TEXTURE, true);
 			rightHand = setupBox(handWidth, handWidth, startX + armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.HAND_TEXTURE, true);
-			leftFoot = setupBox(feetWidth, feetHeight, startX - (20 / Config.WORLD_SCALE), lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.HAND_TEXTURE, true);
-			rightFoot = setupBox(feetWidth, feetHeight, startX + (20 / Config.WORLD_SCALE), lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.HAND_TEXTURE, true);
+			leftFoot = setupBox(feetWidth, feetHeight, startX - (20 / Config.WORLD_SCALE), lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.FOOT_TEXTURE, true);
+			rightFoot = setupBox(feetWidth, feetHeight, startX + (20 / Config.WORLD_SCALE), lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.FOOT_TEXTURE, true, true);
 			
 			
 			_grabableBodies.push(leftFoot, rightFoot, rightHand, leftHand);
@@ -112,20 +112,25 @@ package gameobjects {
 			setupJoint( -180, 1, upperRightArm, lowerRightArm, new b2Vec2(startX + (20 / Config.WORLD_SCALE), startY - (20 / Config.WORLD_SCALE)));
 			setupJoint( -20, 20, leftHand, lowerLeftArm, new b2Vec2(startX - (20 / Config.WORLD_SCALE), startY - (70 / Config.WORLD_SCALE)));
 			setupJoint( -20, 20, rightHand, lowerRightArm, new b2Vec2(startX + (20 / Config.WORLD_SCALE), startY - (70 / Config.WORLD_SCALE)));
-			setupJoint( -100, 1, upperLeftLeg, torso3, new b2Vec2(startX - (10 / Config.WORLD_SCALE), startY + (120 / Config.WORLD_SCALE)));
-			setupJoint( -1, 100, upperRightLeg, torso3, new b2Vec2(startX + (10 / Config.WORLD_SCALE), startY + (120 / Config.WORLD_SCALE)));
+			setupJoint( -140, 1, upperLeftLeg, torso3, new b2Vec2(startX - (10 / Config.WORLD_SCALE), startY + (120 / Config.WORLD_SCALE)));
+			setupJoint( -1, 140, upperRightLeg, torso3, new b2Vec2(startX + (10 / Config.WORLD_SCALE), startY + (120 / Config.WORLD_SCALE)));
 			setupJoint( -1, 100, lowerLeftLeg, upperLeftLeg, new b2Vec2(startX - (10 / Config.WORLD_SCALE), startY + (170 / Config.WORLD_SCALE)));
 			setupJoint( -100, 1, lowerRightLeg, upperRightLeg, new b2Vec2(startX + (10 / Config.WORLD_SCALE), startY + (170 / Config.WORLD_SCALE)));
 			setupJoint( -1, 1, leftFoot, lowerLeftLeg, new b2Vec2(startX - (15 / Config.WORLD_SCALE), startY + (235 / Config.WORLD_SCALE)));
 			setupJoint( -1, 1, rightFoot, lowerRightLeg, new b2Vec2(startX + (15 / Config.WORLD_SCALE), startY + (235 / Config.WORLD_SCALE)));
 		}
 		
-		private function setData(body:b2Body, texture:Texture, width: Number, height:Number, isGrabable:Boolean):void {
+		private function setData(body:b2Body, texture:Texture, width: Number, height:Number, isGrabable:Boolean, invertTexture:Boolean = false):void {
 			var sprite:Sprite = new Sprite();
 			var image:Image = new Image(texture);
 			image.alignPivot();
-			image.width = (width + 0.5)* Config.WORLD_SCALE;
-			image.height = (height + 0.5) * Config.WORLD_SCALE;
+			image.width = width * Config.WORLD_SCALE;
+			image.height = height * Config.WORLD_SCALE;
+			
+			if (invertTexture) {
+				image.scaleX *= -1
+			}
+			
 			sprite.addChild(image);
 			this.addChild(sprite);
 			
@@ -144,7 +149,7 @@ package gameobjects {
 			return body;
 		}
 		
-		private function setupBox(width:Number, height:Number, x:Number, y:Number, texture:Texture, isGrabable:Boolean):b2Body {
+		private function setupBox(width:Number, height:Number, x:Number, y:Number, texture:Texture, isGrabable:Boolean, invertTexture:Boolean = false):b2Body {
 			var box:b2PolygonShape = new b2PolygonShape();
 			
 			//SetAsBox takes half width/height as parameter
@@ -153,7 +158,7 @@ package gameobjects {
 			var body:b2Body = _physicsWorld.CreateBody(getBodyDef(x, y));
 			body.CreateFixture(getFixture(box));
 			
-			setData(body, texture, width, height, isGrabable);
+			setData(body, texture, width, height, isGrabable, invertTexture);
 			
 			return body;
 		}

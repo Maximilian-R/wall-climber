@@ -33,17 +33,37 @@ package core {
 		[Embed(source="../../Resources/Grips/Yellow.png")]
 		private static const YELLOW_GRIP:Class;	
 		
-		[Embed(source="../../Resources/Character/hår.png")]
+		
+		
+		
+		
+		[Embed(source="../../Resources/Character/hair.png")]
 		private static const HAIR:Class;
 		public static var HAIR_TEXTURE:Texture;
 		
-		[Embed(source="../../Resources/Character/ben.png")]
-		private static const LEG:Class;
-		public static var LEG_TEXTURE:Texture;
+		[Embed(source="../../Resources/Character/lowerLeg.png")]
+		private static const LOWER_LEG:Class;
+		public static var LOWER_LEG_TEXTURE:Texture;
+		
+		[Embed(source="../../Resources/Character/upperLeg.png")]
+		private static const UPPER_LEG:Class;
+		public static var UPPER_LEG_TEXTURE:Texture;
+		
+		[Embed(source="../../Resources/Character/lowerArm.png")]
+		private static const LOWER_ARM:Class;
+		public static var LOWER_ARM_TEXTURE:Texture;
+		
+		[Embed(source="../../Resources/Character/upperArm.png")]
+		private static const UPPER_ARM:Class;
+		public static var UPPER_ARM_TEXTURE:Texture;
 		
 		[Embed(source="../../Resources/Character/hand.png")]
 		private static const HAND:Class;
 		public static var HAND_TEXTURE:Texture;
+		
+		[Embed(source="../../Resources/Character/foot.png")]
+		private static const FOOT:Class;
+		public static var FOOT_TEXTURE:Texture;
 		
 		[Embed(source="../../Resources/Character/ribs1.png")]
 		private static const RIBS_1:Class;
@@ -73,14 +93,19 @@ package core {
 			loadGripPNG(TURKOS_GRIP);
 			loadGripPNG(YELLOW_GRIP);
 			
+			ROCK_TEXTURE = Texture.fromBitmap(new ROCK());
+			
 			HAIR_TEXTURE = Texture.fromBitmap(new HAIR());
-			LEG_TEXTURE = Texture.fromBitmap(new LEG());
-			HAND_TEXTURE = Texture.fromBitmap(new HAND());
 			RIBS_1_TEXTURE = Texture.fromBitmap(new RIBS_1());
 			RIBS_2_TEXTURE = Texture.fromBitmap(new RIBS_2());
 			RIBS_3_TEXTURE = Texture.fromBitmap(new RIBS_3());
+			UPPER_ARM_TEXTURE = Texture.fromBitmap(new UPPER_ARM());
+			LOWER_ARM_TEXTURE = Texture.fromBitmap(new LOWER_ARM());
+			UPPER_LEG_TEXTURE = Texture.fromBitmap(new UPPER_LEG());
+			LOWER_LEG_TEXTURE = Texture.fromBitmap(new LOWER_LEG());
+			HAND_TEXTURE = Texture.fromBitmap(new HAND());
+			FOOT_TEXTURE = Texture.fromBitmap(new FOOT());
 			
-			ROCK_TEXTURE = Texture.fromBitmap(new ROCK());
 		}
 		
 		private static function loadGripPNG(png:Class):void {
