@@ -1,7 +1,8 @@
 package core {
 	
 	import states.IState;
-	import states.Play;
+	import states.MenuState;
+	import states.PlayState;
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -21,8 +22,10 @@ package core {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			Assets.init();
+			WallOfFame.load();
+			Key.init(stage);
 			
-			_currentState = new Play();
+			_currentState = new MenuState();
 			addChild(Sprite(_currentState));
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);

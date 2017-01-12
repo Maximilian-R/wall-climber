@@ -13,11 +13,15 @@ package core {
 	public class Config {
 		public function Config() {}
 		
+		// Box2D is tuned for meters, kilograms, and seconds. Thats why using a scale to convert between b2World and sprite on stage.
 		public static const WORLD_SCALE:Number = 30;
 		public static const WORLD_HEIGHT:Number = 600;
-		public static const WORLD_WITDH:Number = 800;
+		public static const WORLD_WIDTH:Number = 800;
 		
 		public static const PHYSICS_GRAVITY:Number = 10;
+		
+		public static const GRABBED_GRIP_EVENT:String = "GRABBED_GRIP_EVENT";
+		public static const STRENGHT_PERCENTAGE_CHANGED:String = "STRENGHT_PERCENTAGE_CHANGED";
 		
 		
 		public static var DISPATCHER:EventDispatcher = new EventDispatcher();

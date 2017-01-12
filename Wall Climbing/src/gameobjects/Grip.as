@@ -6,10 +6,11 @@ package gameobjects {
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FilterData;
 	import Box2D.Dynamics.b2FixtureDef;
+	import Box2D.Dynamics.b2World;
 	import core.Assets;
 	import core.Config;
 	import core.Utils;
-	import states.Play;
+	import states.PlayState;
 	import flash.display.Bitmap;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -21,8 +22,11 @@ package gameobjects {
 		private var _height:Number = 30;
 		private var _image:Image;
 		private var _body:b2Body;
+		private var _physicsWorld:b2World;
 		
-		public function Grip(x:Number, y:Number) {
+		public function Grip(x:Number, y:Number, physicsWorld:b2World) {
+			_physicsWorld = physicsWorld;
+			
 			this.x = x;
 			this.y = y;
 			setupBody();
@@ -54,7 +58,7 @@ package gameobjects {
 			fixtureDef.shape = box;
 			fixtureDef.isSensor = true;
 			
-			var grip:b2Body = Play._physicsWorld.CreateBody(bodyDef);
+			var grip:b2Body = _physicsWorld.CreateBody(bodyDef);
 			_body = grip;
 			grip.CreateFixture(fixtureDef);
 			grip.SetUserData(this);

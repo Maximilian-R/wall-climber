@@ -1,10 +1,17 @@
 package core {
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	/* 
 	GRIPS: https://www.vecteezy.com/vector-art/121239-climbing-wall-grip
 	*/
 
 	public class Assets {
+		[Embed(source = "../../Resources/Font/font.png")]
+		private static var PermanentMarkerBitMap:Class;
+		[Embed(source="../../Resources/Font/font.fnt", mimeType="application/octet-stream")]
+		private static var PermanentMarkerXML:Class;
+		
 		[Embed(source="../../Resources/rock.jpg")]
 		private static const ROCK:Class;
 		public static var ROCK_TEXTURE:Texture;
@@ -53,6 +60,10 @@ package core {
 		public static var gripTextures:Vector.<Texture> = new Vector.<Texture>;
 		
 		public static function init():void {
+			var fontTexture:Texture = Texture.fromEmbeddedAsset(PermanentMarkerBitMap);
+			var bitMapFont:BitmapFont = new BitmapFont(fontTexture, XML(new PermanentMarkerXML));
+			TextField.registerBitmapFont(bitMapFont, "PermanentMarker");
+			
 			loadGripPNG(BLUE_GRIP);
 			loadGripPNG(GREEN_GRIP);
 			loadGripPNG(ORANGE_GRIP);

@@ -3,14 +3,16 @@ package managers {
 	import core.Config;
 	import core.Level;
 	import core.Utils;
+	import flash.geom.Point;
 	import gameobjects.Grip;
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import states.PlayState;
 
 	public class GripManager extends Sprite {
 		
 		private var _currentLevel:Level = null;
-		private var _world:Sprite = null;
+		private var _world:PlayState = null;
 		private var _wallWitdh:Number;
 		private var _wallHeight:Number;
 		private var _wallMargin:Number = 200;
@@ -20,7 +22,7 @@ package managers {
 		private var _wall2:Sprite;
 		private var _onCurrentWall:Sprite;
 		
-		public function GripManager(world:Sprite) {
+		public function GripManager(world:PlayState) {
 			_world = world;
 			
 			loadSettings(Config.getLevel(1));
@@ -62,45 +64,30 @@ package managers {
 		private function populateWall(wall:Sprite):void {
 			
 			if (wall.getChildAt(0) is Image) {
-				var rock:Image = wall.getChildAt(i) as Image;
+				var rock:Image = wall.getChildAt(0) as Image;
 				rock.y = - (_wallHeight * _wallHeightMultiplier);
 			}
 			
-			
-			
-			
-			for (var i:int = 0; i < _currentLevel.grips; i++) {
-				var x:Number = Utils.randomNum(0, _gridScale);
-				var y:Number = Utils.randomNum(0, _gridScale);
-				x = _wallMargin + (x * ((_wallWitdh - (_wallMargin * 2)) / _gridScale));
-				y = y * (_wallHeight / _gridScale);
-				var grip:Grip = new Grip(x, y - (_wallHeight * _wallHeightMultiplier));
+			var grips:Vector.<Point> = getGripPositions();
+			for each (var point:Point in grips)  {
+				var grip:Grip = new Grip(point.x, point.y, _world._physicsWorld);
 				wall.addChild(grip);
 			}
-			
-			_wallHeightMultiplier++;
 		}
 		
 		private function rePositionWall(wall:Sprite):void {
-			
-			for (var i:int = 0; i < _currentLevel.grips; i++) {
 				
-				if (wall.getChildAt(i) is Image) {
-					var rock:Image = wall.getChildAt(i) as Image;
-					rock.y = - (_wallHeight * _wallHeightMultiplier);
-					continue;
-				}
-				
-				var x:Number = Utils.randomNum(0, _gridScale);
-				x = _wallMargin + (x * ((_wallWitdh - (_wallMargin * 2)) / _gridScale));
-				var y:Number = Utils.randomNum(0, _gridScale);
-				y = y * (_wallHeight / _gridScale);
-				
-				var grip:Grip = wall.getChildAt(i) as Grip;
-				grip.updatePosition(x, y - (_wallHeight * _wallHeightMultiplier));
+			if (wall.getChildAt(0) is Image) {
+				var rock:Image = wall.getChildAt(0) as Image;
+				rock.y = - (_wallHeight * _wallHeightMultiplier);
 			}
-			
-			_wallHeightMultiplier++;
+				
+			var grips:Vector.<Point> = getGripPositions();
+			//index 0 is background sprite
+			for (var i:int = 1; i < wall.numChildren; i++) {
+				var grip:Grip = wall.getChildAt(i) as Grip;
+				grip.updatePosition(grips[i-1].x, grips[i-1].y);
+			}
 			
 			if (_onCurrentWall == _wall1){
 				_onCurrentWall = _wall2;
@@ -109,10 +96,55 @@ package managers {
 			}
 		}
 		
+		
+		private function getGripPositions():Vector.<Point> {
+			var gridsUsed:Vector.<Point> = new Vector.<Point>;
+			//Add one for first comparison in while loop.
+			gridsUsed.push(new Point());
+			
+			var x:Number;
+			var y:Number;
+			
+			for (var i:int = 0; i < _currentLevel.grips; i++) {
+				var point:Point;
+				
+				while (true) {
+					var isUnique:Boolean = true;
+					x = Utils.randomNum(0, _gridScale);
+					//-1 to avoid positions on edges of wall. 
+					y = Utils.randomNum(1, _gridScale - 1);
+					point = new Point(x, y);
+						
+					for each (var pointTemp:Point in gridsUsed) {
+						//trace(point + " ?= " + pointTemp)
+						if (point.equals(pointTemp)) {
+							isUnique = false;
+						}
+					}
+					
+					if (isUnique) {
+						gridsUsed.push(point);
+						break;
+					}
+				}
+			}
+			gridsUsed.removeAt(0);
+			
+			var grips:Vector.<Point> = new Vector.<Point>;
+			for each (pointTemp in gridsUsed) {
+				pointTemp.x = _wallMargin + (pointTemp.x * ((_wallWitdh - (_wallMargin * 2)) / _gridScale));
+				pointTemp.y = (pointTemp.y * (_wallHeight / _gridScale)) - point.y - (_wallHeight * _wallHeightMultiplier);
+				grips.push(pointTemp);
+			}
+			
+			_wallHeightMultiplier++;
+			
+			return grips;
+		}
+		
 		public function update(cameraY:Number):void {
 			if (cameraY >= _wallHeight * (_wallHeightMultiplier - 1)) {
 				rePositionWall(_onCurrentWall);
-				trace(cameraY)
 			}
 		}
 	}
