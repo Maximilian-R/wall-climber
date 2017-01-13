@@ -1,4 +1,5 @@
 package states {
+	import SFX.SoundManager;
 	import core.Config;
 	import core.Key;
 	import core.WallOfFame;
@@ -34,6 +35,8 @@ package states {
 		}
 		
 		private function init():void {
+			SoundManager.sharedInstance().playFile("../bin/Assets/GameOverSound.mp3", 0);
+			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			var _background:Image = new Image(Assets.ROCK_TEXTURE);
@@ -65,8 +68,7 @@ package states {
 			Key.DISPATCHER.addEventListener(Keyboard.ENTER + "", backToMainMenu);
 		}
 		
-		public function update():IState {
-			return _returnState;
+		public function update():void {
 		}
 		
 		public function destroy():void {
@@ -83,7 +85,7 @@ package states {
 		}
 		
 		private function backToMainMenu(e:Event):void {
-			_returnState = new PlayState();
+			dispatchEvent(new Event(Config.CHANGE_STATE_EVENT, false, new PlayState()));
 		}
 	}
 }

@@ -55,13 +55,9 @@ package states {
 			instructions.y = stage.stageHeight * 0.5;
 			
 			addChild(instructions);
-			
-			SoundManager.sharedInstance().playFile("../bin/Assets/bensound-brazilsamba.mp3", 3);
-			
 		}
 		
-		public function update():IState {
-			return _returnState;
+		public function update():void {
 		}
 		
 		public function destroy():void {	
@@ -74,7 +70,7 @@ package states {
 		}
 		
 		private function startGame(e:Event):void {
-			_returnState = new PlayState();
+			dispatchEvent(new Event(Config.CHANGE_STATE_EVENT, false, new PlayState()));
 		}
 	}
 }

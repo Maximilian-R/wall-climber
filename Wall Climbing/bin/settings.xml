@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <settings>
 	<physicsWorld timestep="30" velIterations="10" posIterations="10" gravity="9.8" maxJointForce="3000" />
-	<head radius="40" marginToBody="40" />
-	<torso width="50" height="40" overlap="30" shoulders="32" />
-	<arm width="20" height="50" marginToBody="20" />
-	<leg width="25" height="60" marginToBody="12.5"/>
-	<hand width="20" height="30" marginToArm="40" />
-	<foot width="40" height="20"/>
+	
+	<head radius="40" width="40" height="40" marginToBody="40" x="0" y="0" texture="hair" grabable="false" invertTexture="false" />
+	
+	<torso1 width="50" height="40" overlap="30" shoulders="32" x="0" y="40" texture="ribs1" grabable="false" invertTexture="false" />
+	<torso2 width="50" height="40" overlap="30" shoulders="32" x="0" y="70" texture="ribs2" grabable="false" invertTexture="false" />
+	<torso3 width="50" height="40" overlap="30" shoulders="32" x="0" y="100" texture="ribs3" grabable="false" invertTexture="false" />
+	
+	<leftLowerArm width="20" height="50" marginToBody="20" x="-20" y="-42" texture="lowerArm" grabable="false" invertTexture="false" />
+	<leftUpperArm width="20" height="50" marginToBody="20" x="-20" y="8" texture="upperArm" grabable="false" invertTexture="false" />
+	<rightLowerArm width="20" height="50" marginToBody="20" x="20" y="-42" texture="lowerArm" grabable="false" invertTexture="false" />
+	<rightUpperArm width="20" height="50" marginToBody="20" x="20" y="8" texture="upperArm" grabable="false" invertTexture="false" />
+	
+	<leftLowerLeg width="25" height="60" marginToBody="12.5" x="-12.5" y="200" texture="lowerLeg" grabable="false" invertTexture="false" />
+	<leftUpperLeg width="25" height="60" marginToBody="12.5" x="-12.5" y="140" texture="upperLeg" grabable="false" invertTexture="false" />
+	<rightLowerLeg width="25" height="60" marginToBody="12.5" x="12.5" y="200" texture="lowerLeg" grabable="false" invertTexture="false" />
+	<rightUpperLeg width="25" height="60" marginToBody="12.5" x="12.5" y="140" texture="upperLeg" grabable="false" invertTexture="false" />
+	
+	<leftHand width="20" height="30" marginToArm="40" x="-20" y="-82" texture="hand" grabable="true" invertTexture="false" />
+	<rightHand width="20" height="30" marginToArm="40" x="20" y="-82" texture="hand" grabable="true" invertTexture="false"/>
+	
+	<leftFoot width="40" height="20" x="-20" y="230" texture="foot" grabable="true" invertTexture="false" />
+	<rightFoot width="40" height="20" x="20" y="230" texture="foot" grabable="true" invertTexture="true" />
+	
+	
 	<character maxStrength="5000" strengthDrain="1" />
 	
-	<neckJoint lowerLimit="40" upperLimit="40" />
-	<torsoJoint lowerLimit="15" upperLimit="15" />
-	<shoulderJoint lowerLimit="180" upperLimit="60" />
-	<elbowJoint lowerLimit="1" upperLimit="180" />
-	<wristJoint lowerLimit="20" upperLimit="20" />
-	<hipJoint lowerLimit="140" upperLimit="1" />
-	<kneeJoint lowerLimit="1" upperLimit="100" />
-	<ankleJoint lowerLimit="20" upperLimit="60" />
+	
+	
+	<neckJoint lowerLimit="40" upperLimit="40" x="0"  y="20" />
+	<torsoJoint1 lowerLimit="15" upperLimit="15" x="0" y="80" />
+	<torsoJoint2 lowerLimit="15" upperLimit="15" x="0" y="110" />
+	<shoulderJoint lowerLimit="180" upperLimit="60" x="20" y="30" />
+	<elbowJoint lowerLimit="1" upperLimit="180" x="20" y="-20" />
+	<wristJoint lowerLimit="20" upperLimit="20" x="0" y="-70" />
+	<hipJoint lowerLimit="140" upperLimit="1" x="12.5" y="120" />
+	<kneeJoint lowerLimit="1" upperLimit="100" x="12.5" y="170" />
+	<ankleJoint lowerLimit="20" upperLimit="60" x="12.5" y="235" />
 	
 	<wall grips="30" gridSize="10" />
 	<theme primaryColor="0xFF9A35" secondaryColor="0x8CFB86" extraColor="0x00B1BB" headLineSize="72"  btnSize="52" textSize="38" />

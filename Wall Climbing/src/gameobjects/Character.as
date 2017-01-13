@@ -27,9 +27,10 @@ package gameobjects {
 		private var _percentageStrenght:Number;
 		private var _physicsWorld:b2World;
 		private var _grabableBodies:Vector.<b2Body> = new Vector.<b2Body>;
-		
 		private var _head:b2Body;
 		private var _torso1:b2Body;
+		private var _startX:Number = (Config.WORLD_WIDTH * 0.5) / Config.WORLD_SCALE;
+		private var _startY:Number =  (Config.WORLD_HEIGHT * 0.5) / Config.WORLD_SCALE;
 		
 		public function Character(physicsWorld:b2World) {
 			_physicsWorld = physicsWorld;
@@ -43,78 +44,97 @@ package gameobjects {
 			_strengthDrain =  Config.getNumber("character", "strengthDrain");
 			_percentageStrenght = 100;
 			
-			var startX:Number = (Config.WORLD_WIDTH * 0.5) / Config.WORLD_SCALE;
-			var startY:Number =  (Config.WORLD_HEIGHT * 0.5) / Config.WORLD_SCALE;
-			
-			var headRadius:Number = Config.getNumber("head", "radius") / Config.WORLD_SCALE;
-			var torsoWitdh:Number = Config.getNumber("torso", "width") / Config.WORLD_SCALE;
-			var torsoHeight:Number = Config.getNumber("torso", "height") / Config.WORLD_SCALE;
-			var armWidth:Number = Config.getNumber("arm", "width") / Config.WORLD_SCALE;
-			var armHeight:Number = Config.getNumber("arm", "height") / Config.WORLD_SCALE;
-			var handWidth:Number = Config.getNumber("hand", "width") / Config.WORLD_SCALE;
-			var handHeight:Number = Config.getNumber("hand", "height") / Config.WORLD_SCALE;
-			var feetWidth:Number = Config.getNumber("foot", "width") / Config.WORLD_SCALE;
-			var feetHeight:Number = Config.getNumber("foot", "height") / Config.WORLD_SCALE;
-			var legWidth:Number = Config.getNumber("leg", "width") / Config.WORLD_SCALE;
-			var legHeight:Number = Config.getNumber("leg", "height") / Config.WORLD_SCALE;
-			
-			var armMargin:Number = Config.getNumber("arm", "marginToBody") / Config.WORLD_SCALE;
-			var legMargin:Number = Config.getNumber("leg", "marginToBody") / Config.WORLD_SCALE;
-			
-			var neckMargin:Number = Config.getNumber("head", "marginToBody") / Config.WORLD_SCALE;
-			var torsoOverlap:Number = Config.getNumber("torso", "overlap") / Config.WORLD_SCALE;
-			var shoulders:Number = Config.getNumber("torso", "shoulders") / Config.WORLD_SCALE;
-			var handMargin:Number = Config.getNumber("hand", "marginToArm") / Config.WORLD_SCALE;
-			var hipsMargin:Number = torsoHeight;
-			
 			/* ------------------------ BODY PARTS --------------------------- */
-			
-			_head = setupCircle(headRadius, startX, startY, Assets.TEXTURE_ATLAS.getTexture("hair"), false);
-			_torso1 = setupBox(torsoWitdh, torsoHeight, startX, startY + neckMargin, Assets.TEXTURE_ATLAS.getTexture("ribs1"), false);
-			var torso2:b2Body = setupBox(torsoWitdh, torsoHeight, startX, _torso1.GetPosition().y + torsoOverlap, Assets.TEXTURE_ATLAS.getTexture("ribs2"), false);
-			var torso3:b2Body = setupBox(torsoWitdh, torsoHeight, startX, torso2.GetPosition().y + torsoOverlap, Assets.TEXTURE_ATLAS.getTexture("ribs3"), false);
-			var upperLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, _torso1.GetPosition().y - shoulders, Assets.TEXTURE_ATLAS.getTexture("upperArm"), false);
-			var upperRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, _torso1.GetPosition().y - shoulders, Assets.TEXTURE_ATLAS.getTexture("upperArm"), false);
-			var lowerLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.TEXTURE_ATLAS.getTexture("lowerArm"), false);
-			var lowerRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.TEXTURE_ATLAS.getTexture("lowerArm"), false);
-			var upperLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, torso3.GetPosition().y + hipsMargin, Assets.TEXTURE_ATLAS.getTexture("upperLeg"), false);
-			var upperRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, torso3.GetPosition().y + hipsMargin, Assets.TEXTURE_ATLAS.getTexture("upperLeg"), false);
-			var lowerLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.TEXTURE_ATLAS.getTexture("lowerLeg"), false);
-			var lowerRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.TEXTURE_ATLAS.getTexture("lowerLeg"), false);
-			var leftHand:b2Body = setupBox(handWidth, handHeight, startX - armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.TEXTURE_ATLAS.getTexture("hand"), true);
-			var rightHand:b2Body = setupBox(handWidth, handHeight, startX + armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.TEXTURE_ATLAS.getTexture("hand"), true);
-			var leftFoot:b2Body = setupBox(feetWidth, feetHeight, startX - feetWidth/2, lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.TEXTURE_ATLAS.getTexture("foot"), true);
-			var rightFoot:b2Body = setupBox(feetWidth, feetHeight, startX + feetWidth/2, lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.TEXTURE_ATLAS.getTexture("foot"), true, true);
+			_head = setupCircle("head");
+			_torso1 = setupBox("torso1");
+			var torso2:b2Body = setupBox("torso2");
+			var torso3:b2Body = setupBox("torso3");
+			var upperLeftArm:b2Body = setupBox("leftUpperArm");
+			var lowerLeftArm:b2Body = setupBox("leftLowerArm");
+			var upperRightArm:b2Body = setupBox("rightUpperArm");
+			var lowerRightArm:b2Body = setupBox("rightLowerArm");
+			var upperLeftLeg:b2Body = setupBox("leftUpperLeg");
+			var lowerLeftLeg:b2Body = setupBox("leftLowerLeg");
+			var upperRightLeg:b2Body = setupBox("rightUpperLeg");
+			var lowerRightLeg:b2Body = setupBox("rightLowerLeg");
+			var leftHand:b2Body = setupBox("leftHand");
+			var rightHand:b2Body = setupBox("rightHand");
+			var leftFoot:b2Body = setupBox("leftFoot");
+			var rightFoot:b2Body = setupBox("rightFoot");
 			
 			_grabableBodies.push(leftFoot, rightFoot, rightHand, leftHand);
 			
 			/* ------------------------ Joints --------------------------- */
-			
-			setupJoint( -40, 40, _head, _torso1, startX, startY + neckMargin/2);
-			setupJoint( -15, 15, _torso1, torso2, startX, startY + (80 / Config.WORLD_SCALE));
-			setupJoint( -15, 15, torso2, torso3, startX, startY + (110 / Config.WORLD_SCALE));
-			
-			setupJoint( -180, 60, _torso1, upperLeftArm, startX - armMargin, startY + (30 / Config.WORLD_SCALE));
-			setupJoint( -60, 180, _torso1, upperRightArm, startX + armMargin, startY + (30 / Config.WORLD_SCALE));
-			setupJoint( -1, 180, upperLeftArm, lowerLeftArm, startX - armMargin, startY - (20 / Config.WORLD_SCALE));
-			setupJoint( -180, 1, upperRightArm, lowerRightArm,startX + armMargin, startY - (20 / Config.WORLD_SCALE));
-			setupJoint( -20, 20, leftHand, lowerLeftArm, startX - armMargin, startY - (70 / Config.WORLD_SCALE));
-			setupJoint( -20, 20, rightHand, lowerRightArm, startX + armMargin, startY - (70 / Config.WORLD_SCALE));
-			setupJoint( -140, 1, upperLeftLeg, torso3, startX - legMargin, startY + (120 / Config.WORLD_SCALE));
-			setupJoint( -1, 140, upperRightLeg, torso3, startX + legMargin, startY + (120 / Config.WORLD_SCALE));
-			setupJoint( -1, 100, lowerLeftLeg, upperLeftLeg, startX - legMargin, startY + (170 / Config.WORLD_SCALE));
-			setupJoint( -100, 1, lowerRightLeg, upperRightLeg, startX + legMargin, startY + (170 / Config.WORLD_SCALE));
-			setupJoint( -20, 60, leftFoot, lowerLeftLeg, startX - legMargin, startY + (235 / Config.WORLD_SCALE));
-			setupJoint( -60, 20, rightFoot, lowerRightLeg, startX + legMargin, startY + (235 / Config.WORLD_SCALE));
+			setupJoint( "neckJoint", true, _head, _torso1);
+			setupJoint( "torsoJoint1", true, _torso1, torso2);
+			setupJoint( "torsoJoint2", true, torso2, torso3);
+			setupJoint( "shoulderJoint", true, _torso1, upperLeftArm);
+			setupJoint( "shoulderJoint", false, _torso1, upperRightArm);
+			setupJoint( "elbowJoint", true, upperLeftArm, lowerLeftArm);
+			setupJoint( "elbowJoint", false, upperRightArm, lowerRightArm);
+			setupJoint( "wristJoint", true, leftHand, lowerLeftArm);
+			setupJoint( "wristJoint", false, rightHand, lowerRightArm);
+			setupJoint( "hipJoint", true, upperLeftLeg, torso3);
+			setupJoint( "hipJoint", false, upperRightLeg, torso3);
+			setupJoint( "kneeJoint", true, lowerLeftLeg, upperLeftLeg);
+			setupJoint( "kneeJoint", false, lowerRightLeg, upperRightLeg);
+			setupJoint( "ankleJoint", true, leftFoot, lowerLeftLeg);
+			setupJoint( "ankleJoint", false, rightFoot, lowerRightLeg);
 		}
 		
-		private function setData(body:b2Body, texture:Texture, width: Number, height:Number, isGrabable:Boolean, invertTexture:Boolean = false):void {
+		public function setupBox(name:String):b2Body {
+			var width:Number = Config.getNumber(name, "width") / Config.WORLD_SCALE;
+			var height:Number = Config.getNumber(name, "height") / Config.WORLD_SCALE;
+			
+			var box:b2PolygonShape = new b2PolygonShape();
+			box.SetAsBox(width * 0.5, height * 0.5);
+			
+			return setupBody(box, name);
+		}
+		
+		public function setupCircle(name:String):b2Body {
+			var radius:Number = Config.getNumber(name, "radius") / Config.WORLD_SCALE;				
+			var circle:b2CircleShape = new b2CircleShape(radius * 0.5);
+			
+			return setupBody(circle, name);
+		}
+		
+		private function setupBody(shape:b2Shape, name:String):b2Body {
+			var xValue:Number = _startX + (Config.getNumber(name, "x") / Config.WORLD_SCALE);
+			var yValue:Number = _startY + (Config.getNumber(name, "y") / Config.WORLD_SCALE);
+			
+			var bodyDef:b2BodyDef = new b2BodyDef();
+			bodyDef.position.Set(xValue, yValue);
+			bodyDef.type = b2Body.b2_dynamicBody;
+			
+			var fixtureDef:b2FixtureDef = new b2FixtureDef();
+			fixtureDef.density = 20.0;
+			fixtureDef.friction = 0.3;
+			fixtureDef.restitution = 0.0;
+			fixtureDef.shape = shape;
+			
+			var body:b2Body = _physicsWorld.CreateBody(bodyDef);
+			body.CreateFixture(fixtureDef);
+			
+			setData(body, name);
+			
+			return body;
+		}
+		
+		private function setData(body:b2Body, name:String):void {
+			var width:Number = Config.getNumber(name, "width");
+			var height:Number = Config.getNumber(name, "height");
+			var textureName:String = Config.getString(name, "texture");
+			var texture:Texture = Assets.TEXTURE_ATLAS.getTexture(textureName);
+			var grabable:Boolean = Config.getBool(name, "grabable");
+			var invertTexture:Boolean = Config.getBool(name, "invertTexture");
+			
 			var sprite:Sprite = new Sprite();
 			var image:Image = new Image(texture);
 			image.alignPivot();
-			image.width = width * Config.WORLD_SCALE;
-			image.height = height * Config.WORLD_SCALE;
-			
+			image.width = width;
+			image.height = height;
+			image.useHandCursor = grabable;
 			if (invertTexture) {
 				image.scaleX *= -1
 			}
@@ -122,57 +142,36 @@ package gameobjects {
 			sprite.addChild(image);
 			this.addChild(sprite);
 			
-			var data:BodyPartData = new BodyPartData(sprite, isGrabable);
+			var data:BodyPartData = new BodyPartData(sprite, grabable);
 			body.SetUserData(data);
 		}
 		
-		private function setupCircle(radius:Number, x:Number, y:Number, texture:Texture, isGrabable:Boolean):b2Body {
-			var circle:b2CircleShape = new b2CircleShape(radius * 0.5);
+		private function setupJoint(jointName:String, left:Boolean, bodyA:b2Body, bodyB:b2Body):void {
+			var lowerLimit:Number = Config.getNumber(jointName, "lowerLimit") / (180 / Math.PI);
+			var upperLimit:Number = Config.getNumber(jointName, "upperLimit") / (180 / Math.PI);
 			
-			var body:b2Body = _physicsWorld.CreateBody(getBodyDef(x, y));
-			body.CreateFixture(getFixture(circle));
+			var anchorX:Number;
+			var anchorY:Number = _startY + (Config.getNumber(jointName, "y") / Config.WORLD_SCALE);
 			
-			setData(body, texture,radius, radius, isGrabable);
+			var xValue:Number = Config.getNumber(jointName, "x") / Config.WORLD_SCALE;
+			if (left) {
+				anchorX = _startX - xValue;
+			} else {
+				anchorX = _startX + xValue;
+			}
 			
-			return body;
-		}
-		
-		private function setupBox(width:Number, height:Number, x:Number, y:Number, texture:Texture, isGrabable:Boolean, invertTexture:Boolean = false):b2Body {
-			var box:b2PolygonShape = new b2PolygonShape();
-			
-			//SetAsBox takes half width/height as parameter
-			box.SetAsBox(width * 0.5, height * 0.5);
-			
-			var body:b2Body = _physicsWorld.CreateBody(getBodyDef(x, y));
-			body.CreateFixture(getFixture(box));
-			
-			setData(body, texture, width, height, isGrabable, invertTexture);
-			
-			return body;
-		}
-		
-		private function getBodyDef(x:Number, y:Number):b2BodyDef {
-			var bodyDef:b2BodyDef = new b2BodyDef();
-			bodyDef.position.Set(x, y);
-			bodyDef.type = b2Body.b2_dynamicBody;
-			return bodyDef;
-		}
-		
-		private function getFixture(shape:b2Shape):b2FixtureDef {
-			var fixtureDef:b2FixtureDef = new b2FixtureDef();
-			fixtureDef.density = 20.0;
-			fixtureDef.friction = 0.3;
-			fixtureDef.restitution = 0.0;
-			fixtureDef.shape = shape;
-			return fixtureDef;
-		}
-		
-		private function setupJoint(lowerAngle:Number, upperAngle:Number, bodyA:b2Body, bodyB:b2Body, anchorX:Number, anchorY:Number):void {
 			var anchor:b2Vec2 = new b2Vec2(anchorX, anchorY);
 			var jointDef:b2RevoluteJointDef = new b2RevoluteJointDef();
 			jointDef.enableLimit = true;
-			jointDef.lowerAngle = lowerAngle/ (180 / Math.PI);
-			jointDef.upperAngle = upperAngle / (180 / Math.PI);
+			
+			if (left) {
+				jointDef.lowerAngle = -lowerLimit;
+				jointDef.upperAngle = upperLimit;
+			} else {
+				jointDef.lowerAngle = -upperLimit;
+				jointDef.upperAngle = lowerLimit;
+			}
+			
 			jointDef.Initialize(bodyA, bodyB, anchor);
 			_physicsWorld.CreateJoint(jointDef);
 		}

@@ -7,10 +7,10 @@ package core {
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class Game extends Sprite {
+	public class GameStateMachine extends Sprite {
 		private var _currentState:IState;
 		
-		public function Game() {
+		public function GameStateMachine() {
 			if (stage) { 
 				init(); }
 			else { 
@@ -25,26 +25,34 @@ package core {
 			WallOfFame.load();
 			Key.init(stage);
 			
-			_currentState = new MenuState();
+			
+			setState(new MenuState);
 			addChild(Sprite(_currentState));
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		public function onEnterFrame(e:Event):void {
-			var newState:IState = _currentState.update();
-			if (newState != null) {
-				setState(newState);
-			}
+			_currentState.update();
 		}
 		
 		private function setState(state:IState):void {
+			var sprite:DisplayObject = _currentState as DisplayObject;
+			
 			if (_currentState != null) {
 				_currentState.destroy();
-				removeChild(_currentState as DisplayObject);
+				sprite.removeEventListener(Config.CHANGE_STATE_EVENT, onChangeState)
+				removeChild(sprite);
 			}
+			
 			_currentState = state;
+			sprite= _currentState as DisplayObject;
+			sprite.addEventListener(Config.CHANGE_STATE_EVENT, onChangeState);
 			addChild(state as DisplayObject);
+		}
+		
+		public function onChangeState(e:Event):void {
+			setState(e.data as IState);
 		}
 	}
 }

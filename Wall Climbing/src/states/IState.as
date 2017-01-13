@@ -1,7 +1,7 @@
 package states {
 	
 	public interface IState {
-		function update():IState;
+		function update():void;
 		function destroy():void;
 	}
 }

@@ -20,6 +20,7 @@ package core {
 		
 		public static const GRABBED_GRIP_EVENT:String = "GRABBED_GRIP_EVENT";
 		public static const STRENGHT_PERCENTAGE_CHANGED:String = "STRENGHT_PERCENTAGE_CHANGED";
+		public static const CHANGE_STATE_EVENT:String = " CHANGE_STATE_EVENT";
 		
 		public static var DISPATCHER:EventDispatcher = new EventDispatcher();
 		

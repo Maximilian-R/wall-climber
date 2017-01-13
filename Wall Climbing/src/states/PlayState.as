@@ -2,6 +2,7 @@ package states {
 	
 	import GUI.GameInfo;
 	import GUI.HighScoreLine;
+	import SFX.SoundManager;
 	import core.Key;
 	import core.WallOfFame;
 	import flash.geom.Point;
@@ -43,13 +44,12 @@ package states {
 		
 		private function init(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			_gripManager = new GripManager(this);
 			addChild(_gripManager)
-			
 			_character = new Character(_physicsWorld);
 			addChild(_character);
+			parent.addChild(_gui);
 			
 			if (WallOfFame.getHighScore() > 0) {
 				_highScoreLine = new HighScoreLine(stage.stageWidth);
@@ -57,12 +57,12 @@ package states {
 				_highScoreLine.y = 300 - WallOfFame.getHighScore() * Config.WORLD_SCALE;
 			}
 			
-			parent.addChild(_gui);
-			
 			_physicsWorld.addEventListener(Config.GRABBED_GRIP_EVENT, startGame);
 			_character.addEventListener(Config.STRENGHT_PERCENTAGE_CHANGED, updateGUI);
-			
 			Key.DISPATCHER.addEventListener(Keyboard.P + "", pause);
+			stage.addEventListener(TouchEvent.TOUCH, onTouch);
+			
+			SoundManager.sharedInstance().playFile("../bin/Assets/bensound-brazilsamba.mp3", 0);
 		}
 		
 		public function pause():void {
@@ -79,9 +79,9 @@ package states {
 			_gui.setBar(_character.getPercentageStrentgh());
 		}
 		
-		public function update():IState {
+		public function update():void {
 			if (_isPaused) {
-				return null;
+				return;
 			}
 			
 			_character.update();
@@ -92,9 +92,8 @@ package states {
 			camera();
 		
 			if (outsideWorldBounds()) {
-				return new GameOverState(_score);
+				dispatchEvent(new Event(Config.CHANGE_STATE_EVENT, false, new GameOverState(_score)));
 			}
-			return null;
 		}
 		
 		private function updateScore():void {
@@ -161,6 +160,8 @@ package states {
 			_minCameraY = 0;
 			_character = null;
 			_score = 0;
+			
+			SoundManager.sharedInstance().stopAllSounds();
 		}
 		
 		public function get physicsWorld():PhysicsWorld {
