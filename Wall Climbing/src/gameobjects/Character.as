@@ -69,22 +69,22 @@ package gameobjects {
 			
 			/* ------------------------ BODY PARTS --------------------------- */
 			
-			_head = setupCircle(headRadius, startX, startY, Assets.HAIR_TEXTURE, false);
-			_torso1 = setupBox(torsoWitdh, torsoHeight, startX, startY + neckMargin, Assets.RIBS_1_TEXTURE, false);
-			var torso2:b2Body = setupBox(torsoWitdh, torsoHeight, startX, _torso1.GetPosition().y + torsoOverlap, Assets.RIBS_2_TEXTURE, false);
-			var torso3:b2Body = setupBox(torsoWitdh, torsoHeight, startX, torso2.GetPosition().y + torsoOverlap, Assets.RIBS_3_TEXTURE, false);
-			var upperLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, _torso1.GetPosition().y - shoulders, Assets.UPPER_ARM_TEXTURE, false);
-			var upperRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, _torso1.GetPosition().y - shoulders, Assets.UPPER_ARM_TEXTURE, false);
-			var lowerLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.LOWER_ARM_TEXTURE, false);
-			var lowerRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.LOWER_ARM_TEXTURE, false);
-			var upperLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, torso3.GetPosition().y + hipsMargin, Assets.UPPER_LEG_TEXTURE, false);
-			var upperRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, torso3.GetPosition().y + hipsMargin, Assets.UPPER_LEG_TEXTURE, false);
-			var lowerLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.LOWER_LEG_TEXTURE, false);
-			var lowerRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.LOWER_LEG_TEXTURE, false);
-			var leftHand:b2Body = setupBox(handWidth, handHeight, startX - armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.HAND_TEXTURE, true);
-			var rightHand:b2Body = setupBox(handWidth, handHeight, startX + armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.HAND_TEXTURE, true);
-			var leftFoot:b2Body = setupBox(feetWidth, feetHeight, startX - feetWidth/2, lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.FOOT_TEXTURE, true);
-			var rightFoot:b2Body = setupBox(feetWidth, feetHeight, startX + feetWidth/2, lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.FOOT_TEXTURE, true, true);
+			_head = setupCircle(headRadius, startX, startY, Assets.TEXTURE_ATLAS.getTexture("hair"), false);
+			_torso1 = setupBox(torsoWitdh, torsoHeight, startX, startY + neckMargin, Assets.TEXTURE_ATLAS.getTexture("ribs1"), false);
+			var torso2:b2Body = setupBox(torsoWitdh, torsoHeight, startX, _torso1.GetPosition().y + torsoOverlap, Assets.TEXTURE_ATLAS.getTexture("ribs2"), false);
+			var torso3:b2Body = setupBox(torsoWitdh, torsoHeight, startX, torso2.GetPosition().y + torsoOverlap, Assets.TEXTURE_ATLAS.getTexture("ribs3"), false);
+			var upperLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, _torso1.GetPosition().y - shoulders, Assets.TEXTURE_ATLAS.getTexture("upperArm"), false);
+			var upperRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, _torso1.GetPosition().y - shoulders, Assets.TEXTURE_ATLAS.getTexture("upperArm"), false);
+			var lowerLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.TEXTURE_ATLAS.getTexture("lowerArm"), false);
+			var lowerRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.TEXTURE_ATLAS.getTexture("lowerArm"), false);
+			var upperLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, torso3.GetPosition().y + hipsMargin, Assets.TEXTURE_ATLAS.getTexture("upperLeg"), false);
+			var upperRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, torso3.GetPosition().y + hipsMargin, Assets.TEXTURE_ATLAS.getTexture("upperLeg"), false);
+			var lowerLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.TEXTURE_ATLAS.getTexture("lowerLeg"), false);
+			var lowerRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.TEXTURE_ATLAS.getTexture("lowerLeg"), false);
+			var leftHand:b2Body = setupBox(handWidth, handHeight, startX - armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.TEXTURE_ATLAS.getTexture("hand"), true);
+			var rightHand:b2Body = setupBox(handWidth, handHeight, startX + armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.TEXTURE_ATLAS.getTexture("hand"), true);
+			var leftFoot:b2Body = setupBox(feetWidth, feetHeight, startX - feetWidth/2, lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.TEXTURE_ATLAS.getTexture("foot"), true);
+			var rightFoot:b2Body = setupBox(feetWidth, feetHeight, startX + feetWidth/2, lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.TEXTURE_ATLAS.getTexture("foot"), true, true);
 			
 			_grabableBodies.push(leftFoot, rightFoot, rightHand, leftHand);
 			

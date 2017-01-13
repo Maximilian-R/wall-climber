@@ -39,6 +39,7 @@ package managers {
 			var wall:Sprite = new Sprite();
 			wall.height = _world.height;
 			wall.width = _wallWitdh;
+			wall.width = _wallWitdh;
 			
 			addBackground(wall);
 			addChild(wall);

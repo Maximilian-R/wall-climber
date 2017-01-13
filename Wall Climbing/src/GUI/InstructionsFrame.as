@@ -20,14 +20,14 @@ package GUI {
 			_label.y = -_label.height;
 			addChild(_label);
 			
-			var leftHand:Image = new Image(Assets.HAND_TEXTURE);
+			var leftHand:Image = new Image(Assets.TEXTURE_ATLAS.getTexture("hand"));
 			leftHand.alignPivot();
 			leftHand.width = HAND_SIZE;
 			leftHand.height = HAND_SIZE;
 			leftHand.x = -leftHand.width;
 			leftHand.rotation = -HAND_ROTATION;
 			
-			var rightHand:Image = new Image(Assets.HAND_TEXTURE);
+			var rightHand:Image = new Image(Assets.TEXTURE_ATLAS.getTexture("hand"));
 			rightHand.alignPivot();
 			rightHand.width = HAND_SIZE;
 			rightHand.height = HAND_SIZE;
