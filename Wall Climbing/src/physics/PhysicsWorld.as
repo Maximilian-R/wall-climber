@@ -21,13 +21,13 @@ package physics {
 
 	public class PhysicsWorld extends b2World {
 		
-		private var timeStep:Number = 1.0 / 30;
-		private var velocityIterations:Number = 10;
-		private var positionIterations:Number = 10;
+		private var timeStep:Number;
+		private var velocityIterations:Number;
+		private var positionIterations:Number;
 		
-		private var _mouseJoint:b2MouseJoint = null;
-		private var _heldBody:b2Body = null;
-		private var _jointMaxForce:Number = 3000;
+		private var _mouseJoint:b2MouseJoint;
+		private var _heldBody:b2Body;
+		private var _jointMaxForce:Number = 0;
 		
 		private var _dispatcher:EventDispatcher = new EventDispatcher();
 		
@@ -35,8 +35,13 @@ package physics {
 		private var _debugModeOn:Boolean = false;
 		public var _debugger:Debugger;
 		
-		public function PhysicsWorld() {	
-			var gravity:b2Vec2 = new b2Vec2 (0.0, Config.PHYSICS_GRAVITY);
+		public function PhysicsWorld() {
+			timeStep = 1.0 / Config.getNumber("physicsWorld", "timestep");
+			velocityIterations = Config.getNumber("physicsWorld", "velIterations");
+			positionIterations = Config.getNumber("physicsWorld", "posIterations");
+			_jointMaxForce = Config.getNumber("physicsWorld", "maxJointForce");
+			
+			var gravity:b2Vec2 = new b2Vec2 (0.0, Config.getNumber("physicsWorld", "gravity"));
 			var doSleep:Boolean = true;
 			
 			super(gravity, doSleep);

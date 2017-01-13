@@ -1,5 +1,6 @@
 package states {
 	import GUI.InstructionsFrame;
+	import SFX.SoundManager;
 	import core.Config;
 	import core.Assets;
 	import starling.display.Button;
@@ -54,6 +55,9 @@ package states {
 			instructions.y = stage.stageHeight * 0.5;
 			
 			addChild(instructions);
+			
+			SoundManager.sharedInstance().playFile("../bin/Assets/bensound-brazilsamba.mp3", 3);
+			
 		}
 		
 		public function update():IState {

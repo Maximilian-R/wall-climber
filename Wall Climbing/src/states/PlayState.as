@@ -109,7 +109,7 @@ package states {
 		}
 		
 		private function getCharYOnCameraSprite():Number {
-			var yPos:Number = _character.head.GetWorldCenter().y * Config.WORLD_SCALE;
+			var yPos:Number = _character.getWorldCenterY() * Config.WORLD_SCALE;
 			var charYOnCamSprite:Number = stage.stageHeight / 2 - yPos;
 			return charYOnCamSprite;
 		}

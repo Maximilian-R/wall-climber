@@ -18,8 +18,6 @@ package core {
 		public static const WORLD_HEIGHT:Number = 600;
 		public static const WORLD_WIDTH:Number = 800;
 		
-		public static const PHYSICS_GRAVITY:Number = 10;
-		
 		public static const GRABBED_GRIP_EVENT:String = "GRABBED_GRIP_EVENT";
 		public static const STRENGHT_PERCENTAGE_CHANGED:String = "STRENGHT_PERCENTAGE_CHANGED";
 		
@@ -69,24 +67,24 @@ package core {
 			return level;
 		}
 		
-		public static function getString(attribute:String, node:String):String {
+		public static function getString(node:String, attribute:String):String {
 			return getSetting(attribute, node);
 		}
 		
-		public static function getInt(attribute:String, node:String):int {
+		public static function getInt(node:String, attribute:String):int {
 			return parseInt(getSetting(attribute, node));
 		}
 		
-		public static function getNumber(attribute:String, node:String):Number {
+		public static function getNumber(node:String, attribute:String):Number {
 			return parseFloat(getSetting(attribute, node));
 		}
 		
-		public static function getBool(attribute:String, node:String):Boolean {
+		public static function getBool(node:String, attribute:String):Boolean {
 			var s:String = (getSetting(attribute, node));
 			return (s == "1" || s == "true");
 		}
 		
-		public static function getColor(attribute:String, node:String):uint {
+		public static function getColor(node:String, attribute:String):uint {
 			return parseInt(getSetting(attribute, node), 16);
 		}
 		

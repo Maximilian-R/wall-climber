@@ -15,32 +15,21 @@ package gameobjects {
 	import core.Config;
 	import physics.PhysicsWorld;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
-	import states.PlayState;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 
 	public class Character extends Sprite {
 		
-		private var _maxStrength:Number = 5000;
-		private var _strength:Number = _maxStrength;
-		private var _strengthDrain:Number = 1;
-		private var _percentageStrenght:Number = 100;
-		
+		private var _maxStrength:Number;
+		private var _strength:Number;
+		private var _strengthDrain:Number;
+		private var _percentageStrenght:Number;
 		private var _physicsWorld:b2World;
-		private var torso1:b2Body;
-		
-		private var leftFoot:b2Body;
-		private var rightFoot:b2Body;
-		private var	leftHand:b2Body;
-		private var	rightHand:b2Body;
-		
-		private var _dispatcher:EventDispatcher = new EventDispatcher();
-		
 		private var _grabableBodies:Vector.<b2Body> = new Vector.<b2Body>;
 		
-		public var head:b2Body;
+		private var _head:b2Body;
+		private var _torso1:b2Body;
 		
 		public function Character(physicsWorld:b2World) {
 			_physicsWorld = physicsWorld;
@@ -49,75 +38,77 @@ package gameobjects {
 		}
 		
 		private function setupDynamicBody():void {
+			_maxStrength = Config.getNumber("character", "maxStrength");
+			_strength = _maxStrength;
+			_strengthDrain =  Config.getNumber("character", "strengthDrain");
+			_percentageStrenght = 100;
+			
 			
 			var startX:Number = (Config.WORLD_WIDTH * 0.5) / Config.WORLD_SCALE;
 			var startY:Number =  (Config.WORLD_HEIGHT * 0.5) / Config.WORLD_SCALE;
 			
-			var headRadius:Number = 40 / Config.WORLD_SCALE;
-			var torsoWitdh:Number = 50 / Config.WORLD_SCALE;
-			var torsoHeight:Number = 40 / Config.WORLD_SCALE;
-			var armWidth:Number = 20 / Config.WORLD_SCALE;
-			var armHeight:Number = 50 / Config.WORLD_SCALE;
-			var handWidth:Number = 20 / Config.WORLD_SCALE;
-			var feetWidth:Number = 40 / Config.WORLD_SCALE;
-			var feetHeight:Number = 20 / Config.WORLD_SCALE;
-			var legWidth:Number = 25 / Config.WORLD_SCALE;
-			var legHeight:Number = 60 / Config.WORLD_SCALE;
-			var armMargin:Number = 20 / Config.WORLD_SCALE;
-			var legMargin:Number = 12.5 / Config.WORLD_SCALE;
+			var headRadius:Number = Config.getNumber("head", "radius") / Config.WORLD_SCALE;
+			var torsoWitdh:Number = Config.getNumber("torso", "width") / Config.WORLD_SCALE;
+			var torsoHeight:Number = Config.getNumber("torso", "height") / Config.WORLD_SCALE;
+			var armWidth:Number = Config.getNumber("arm", "width") / Config.WORLD_SCALE;
+			var armHeight:Number = Config.getNumber("arm", "height") / Config.WORLD_SCALE;
+			var handWidth:Number = Config.getNumber("hand", "width") / Config.WORLD_SCALE;
+			var handHeight:Number = Config.getNumber("hand", "height") / Config.WORLD_SCALE;
+			var feetWidth:Number = Config.getNumber("foot", "width") / Config.WORLD_SCALE;
+			var feetHeight:Number = Config.getNumber("foot", "height") / Config.WORLD_SCALE;
+			var legWidth:Number = Config.getNumber("leg", "width") / Config.WORLD_SCALE;
+			var legHeight:Number = Config.getNumber("leg", "height") / Config.WORLD_SCALE;
 			
-			var neckMargin:Number = headRadius * 1.25;
-			var torsoOverlap:Number = torsoHeight * 0.75;
-			var shoulders:Number = torsoHeight * 0.80;
-			var handMargin:Number = handWidth * 2;
-			var hipsMargin:Number = torsoHeight * 1;
+			var armMargin:Number = Config.getNumber("arm", "marginToBody") / Config.WORLD_SCALE;
+			var legMargin:Number = Config.getNumber("leg", "marginToBody") / Config.WORLD_SCALE;
+			
+			var neckMargin:Number = Config.getNumber("head", "marginToBody") / Config.WORLD_SCALE;
+			var torsoOverlap:Number = Config.getNumber("torso", "overlap") / Config.WORLD_SCALE;
+			var shoulders:Number = Config.getNumber("torso", "shoulders") / Config.WORLD_SCALE;
+			var handMargin:Number = Config.getNumber("hand", "marginToArm") / Config.WORLD_SCALE;
+			var hipsMargin:Number = torsoHeight;
 			
 			/* ------------------------ BODY PARTS --------------------------- */
 			
-			head = setupCircle(headRadius, startX, startY, Assets.HAIR_TEXTURE, false);
-			
-			torso1 = setupBox(torsoWitdh, torsoHeight, startX, startY + neckMargin, Assets.RIBS_1_TEXTURE, false);
-			var torso2:b2Body = setupBox(torsoWitdh, torsoHeight, startX, torso1.GetPosition().y + torsoOverlap, Assets.RIBS_2_TEXTURE, false);
+			_head = setupCircle(headRadius, startX, startY, Assets.HAIR_TEXTURE, false);
+			_torso1 = setupBox(torsoWitdh, torsoHeight, startX, startY + neckMargin, Assets.RIBS_1_TEXTURE, false);
+			var torso2:b2Body = setupBox(torsoWitdh, torsoHeight, startX, _torso1.GetPosition().y + torsoOverlap, Assets.RIBS_2_TEXTURE, false);
 			var torso3:b2Body = setupBox(torsoWitdh, torsoHeight, startX, torso2.GetPosition().y + torsoOverlap, Assets.RIBS_3_TEXTURE, false);
-			
-			var upperLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, torso1.GetPosition().y - shoulders, Assets.UPPER_ARM_TEXTURE, false);
-			var upperRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, torso1.GetPosition().y - shoulders, Assets.UPPER_ARM_TEXTURE, false);
+			var upperLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, _torso1.GetPosition().y - shoulders, Assets.UPPER_ARM_TEXTURE, false);
+			var upperRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, _torso1.GetPosition().y - shoulders, Assets.UPPER_ARM_TEXTURE, false);
 			var lowerLeftArm:b2Body = setupBox(armWidth, armHeight, startX - armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.LOWER_ARM_TEXTURE, false);
 			var lowerRightArm:b2Body = setupBox(armWidth, armHeight, startX + armMargin, upperLeftArm.GetPosition().y - armHeight, Assets.LOWER_ARM_TEXTURE, false);
-			
-			
-			
 			var upperLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, torso3.GetPosition().y + hipsMargin, Assets.UPPER_LEG_TEXTURE, false);
 			var upperRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, torso3.GetPosition().y + hipsMargin, Assets.UPPER_LEG_TEXTURE, false);
 			var lowerLeftLeg:b2Body = setupBox(legWidth, legHeight, startX - legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.LOWER_LEG_TEXTURE, false);
 			var lowerRightLeg:b2Body = setupBox(legWidth, legHeight, startX + legMargin, upperLeftLeg.GetPosition().y + legHeight, Assets.LOWER_LEG_TEXTURE, false);
-			
-			
-			leftHand = setupBox(handWidth, handWidth, startX - armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.HAND_TEXTURE, true);
-			rightHand = setupBox(handWidth, handWidth, startX + armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.HAND_TEXTURE, true);
-			leftFoot = setupBox(feetWidth, feetHeight, startX - (20 / Config.WORLD_SCALE), lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.FOOT_TEXTURE, true);
-			rightFoot = setupBox(feetWidth, feetHeight, startX + (20 / Config.WORLD_SCALE), lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.FOOT_TEXTURE, true, true);
-			
+			var leftHand:b2Body = setupBox(handWidth, handHeight, startX - armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.HAND_TEXTURE, true);
+			var rightHand:b2Body = setupBox(handWidth, handHeight, startX + armMargin, lowerLeftArm.GetPosition().y - handMargin, Assets.HAND_TEXTURE, true);
+			var leftFoot:b2Body = setupBox(feetWidth, feetHeight, startX - feetWidth/2, lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.FOOT_TEXTURE, true);
+			var rightFoot:b2Body = setupBox(feetWidth, feetHeight, startX + feetWidth/2, lowerLeftLeg.GetPosition().y + (legHeight * 0.5), Assets.FOOT_TEXTURE, true, true);
 			
 			_grabableBodies.push(leftFoot, rightFoot, rightHand, leftHand);
 			
 			/* ------------------------ Joints --------------------------- */
 			
-			setupJoint( -40, 40, head, torso1, new b2Vec2(startX, startY + (20 / Config.WORLD_SCALE)));
-			setupJoint( -15, 15, torso1, torso2, new b2Vec2(startX, startY + (80 / Config.WORLD_SCALE)));
-			setupJoint( -15, 15, torso2, torso3, new b2Vec2(startX, startY + (110 / Config.WORLD_SCALE)));
-			setupJoint( -180, 60, torso1, upperLeftArm, new b2Vec2(startX - (20 / Config.WORLD_SCALE), startY + (30 / Config.WORLD_SCALE)));
-			setupJoint( -60, 180, torso1, upperRightArm, new b2Vec2(startX + (20 / Config.WORLD_SCALE), startY + (30 / Config.WORLD_SCALE)));
-			setupJoint( -1, 180, upperLeftArm, lowerLeftArm, new b2Vec2(startX - (20 / Config.WORLD_SCALE), startY - (20 / Config.WORLD_SCALE)));
-			setupJoint( -180, 1, upperRightArm, lowerRightArm, new b2Vec2(startX + (20 / Config.WORLD_SCALE), startY - (20 / Config.WORLD_SCALE)));
-			setupJoint( -20, 20, leftHand, lowerLeftArm, new b2Vec2(startX - (20 / Config.WORLD_SCALE), startY - (70 / Config.WORLD_SCALE)));
-			setupJoint( -20, 20, rightHand, lowerRightArm, new b2Vec2(startX + (20 / Config.WORLD_SCALE), startY - (70 / Config.WORLD_SCALE)));
-			setupJoint( -140, 1, upperLeftLeg, torso3, new b2Vec2(startX - (10 / Config.WORLD_SCALE), startY + (120 / Config.WORLD_SCALE)));
-			setupJoint( -1, 140, upperRightLeg, torso3, new b2Vec2(startX + (10 / Config.WORLD_SCALE), startY + (120 / Config.WORLD_SCALE)));
-			setupJoint( -1, 100, lowerLeftLeg, upperLeftLeg, new b2Vec2(startX - (10 / Config.WORLD_SCALE), startY + (170 / Config.WORLD_SCALE)));
-			setupJoint( -100, 1, lowerRightLeg, upperRightLeg, new b2Vec2(startX + (10 / Config.WORLD_SCALE), startY + (170 / Config.WORLD_SCALE)));
-			setupJoint( -1, 1, leftFoot, lowerLeftLeg, new b2Vec2(startX - (15 / Config.WORLD_SCALE), startY + (235 / Config.WORLD_SCALE)));
-			setupJoint( -1, 1, rightFoot, lowerRightLeg, new b2Vec2(startX + (15 / Config.WORLD_SCALE), startY + (235 / Config.WORLD_SCALE)));
+			
+			
+			setupJoint( -40, 40, _head, _torso1, startX, startY + neckMargin/2);
+			setupJoint( -15, 15, _torso1, torso2, startX, startY + (80 / Config.WORLD_SCALE));
+			setupJoint( -15, 15, torso2, torso3, startX, startY + (110 / Config.WORLD_SCALE));
+			
+			setupJoint( -180, 60, _torso1, upperLeftArm, startX - armMargin, startY + (30 / Config.WORLD_SCALE));
+			setupJoint( -60, 180, _torso1, upperRightArm, startX + armMargin, startY + (30 / Config.WORLD_SCALE));
+			setupJoint( -1, 180, upperLeftArm, lowerLeftArm, startX - armMargin, startY - (20 / Config.WORLD_SCALE));
+			setupJoint( -180, 1, upperRightArm, lowerRightArm,startX + armMargin, startY - (20 / Config.WORLD_SCALE));
+			setupJoint( -20, 20, leftHand, lowerLeftArm, startX - armMargin, startY - (70 / Config.WORLD_SCALE));
+			setupJoint( -20, 20, rightHand, lowerRightArm, startX + armMargin, startY - (70 / Config.WORLD_SCALE));
+			setupJoint( -140, 1, upperLeftLeg, torso3, startX - legMargin, startY + (120 / Config.WORLD_SCALE));
+			setupJoint( -1, 140, upperRightLeg, torso3, startX + legMargin, startY + (120 / Config.WORLD_SCALE));
+			setupJoint( -1, 100, lowerLeftLeg, upperLeftLeg, startX - legMargin, startY + (170 / Config.WORLD_SCALE));
+			setupJoint( -100, 1, lowerRightLeg, upperRightLeg, startX + legMargin, startY + (170 / Config.WORLD_SCALE));
+			setupJoint( -20, 60, leftFoot, lowerLeftLeg, startX - legMargin, startY + (235 / Config.WORLD_SCALE));
+			setupJoint( -60, 20, rightFoot, lowerRightLeg, startX + legMargin, startY + (235 / Config.WORLD_SCALE));
 		}
 		
 		private function setData(body:b2Body, texture:Texture, width: Number, height:Number, isGrabable:Boolean, invertTexture:Boolean = false):void {
@@ -179,7 +170,8 @@ package gameobjects {
 			return fixtureDef;
 		}
 		
-		private function setupJoint(lowerAngle:Number, upperAngle:Number, bodyA:b2Body, bodyB:b2Body, anchor:b2Vec2):void {
+		private function setupJoint(lowerAngle:Number, upperAngle:Number, bodyA:b2Body, bodyB:b2Body, anchorX:Number, anchorY:Number):void {
+			var anchor:b2Vec2 = new b2Vec2(anchorX, anchorY);
 			var jointDef:b2RevoluteJointDef = new b2RevoluteJointDef();
 			jointDef.enableLimit = true;
 			jointDef.lowerAngle = lowerAngle/ (180 / Math.PI);
@@ -190,9 +182,9 @@ package gameobjects {
 		
 		public function freezeTorso(on:Boolean):void {
 			if (on) {
-				torso1.SetType(b2Body.b2_staticBody);
+				_torso1.SetType(b2Body.b2_staticBody);
 			} else {
-				torso1.SetType(b2Body.b2_dynamicBody);
+				_torso1.SetType(b2Body.b2_dynamicBody);
 			}
 		}
 		
@@ -237,6 +229,10 @@ package gameobjects {
 		
 		public function getPercentageStrentgh():Number {
 			return _percentageStrenght;
+		}
+		
+		public function getWorldCenterY():Number {
+			return _head.GetWorldCenter().y
 		}
 	}
 }

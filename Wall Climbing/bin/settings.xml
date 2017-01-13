@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <settings>
+	<physicsWorld timestep="30" velIterations="10" posIterations="10" gravity="9.8" maxJointForce="3000" />
+	<head radius="40" marginToBody="40" />
+	<torso width="50" height="40" overlap="30" shoulders="32" />
+	<arm width="20" height="50" marginToBody="20" />
+	<leg width="25" height="60" marginToBody="12.5"/>
+	<hand width="20" height="30" marginToArm="40" />
+	<foot width="40" height="20"/>
+	<character maxStrength="5000" strengthDrain="1" />
+	
+	<neckJoint lowerLimit="40" upperLimit="40" />
+	<torsoJoint lowerLimit="15" upperLimit="15" />
+	<shoulderJoint lowerLimit="180" upperLimit="60" />
+	<elbowJoint lowerLimit="1" upperLimit="180" />
+	<wristJoint lowerLimit="20" upperLimit="20" />
+	<hipJoint lowerLimit="140" upperLimit="1" />
+	<kneeJoint lowerLimit="1" upperLimit="100" />
+	<ankleJoint lowerLimit="20" upperLimit="60" />
+	
+	
+	
 	<level id="1" height="2000" width="600" grips="30" />
 </settings>
