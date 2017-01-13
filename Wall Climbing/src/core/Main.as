@@ -13,7 +13,7 @@ package core {
 		
 		private function init(e:Event):void {
 			var star:Starling = new Starling(Game,stage);
-			star.showStats = true;
+			star.showStats = false;
 			star.start();
 		}
 	}

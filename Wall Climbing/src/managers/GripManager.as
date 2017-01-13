@@ -1,7 +1,6 @@
 package managers {
 	import core.Assets;
 	import core.Config;
-	import core.Level;
 	import core.Utils;
 	import flash.geom.Point;
 	import gameobjects.Grip;
@@ -11,7 +10,7 @@ package managers {
 
 	public class GripManager extends Sprite {
 		
-		private var _currentLevel:Level = null;
+		private var _gripsPerWall:Number = 0;
 		private var _world:PlayState = null;
 		private var _wallWitdh:Number;
 		private var _wallHeight:Number;
@@ -25,7 +24,7 @@ package managers {
 		public function GripManager(world:PlayState) {
 			_world = world;
 			
-			loadSettings(Config.getLevel(1));
+			loadSettings();
 			
 			_wall1 = setupWall();
 			_wall2 = setupWall();
@@ -54,9 +53,9 @@ package managers {
 			wall.addChild(rock);
 		}
 		
-		private function loadSettings(level:Level):void {
-			_currentLevel = level;
-			
+		private function loadSettings():void {
+			_gripsPerWall = Config.getNumber("wall", "grips");
+			_gridScale = Config.getNumber("wall", "gridSize");
 			_wallWitdh = _world.stage.stageWidth;
 			_wallHeight = _world.stage.stageHeight;
 		}
@@ -105,7 +104,7 @@ package managers {
 			var x:Number;
 			var y:Number;
 			
-			for (var i:int = 0; i < _currentLevel.grips; i++) {
+			for (var i:int = 0; i < _gripsPerWall; i++) {
 				var point:Point;
 				
 				while (true) {

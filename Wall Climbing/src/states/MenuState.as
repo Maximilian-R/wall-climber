@@ -37,13 +37,13 @@ package states {
 			_background.height = Config.WORLD_HEIGHT;
 			addChild(_background);
 			
-			var textFormat:TextFormat = new TextFormat("PermanentMarker", 72, 0xFF9A35);
+			var textFormat:TextFormat = new TextFormat("PermanentMarker", Config.getNumber("theme", "headLineSize"), Config.getColor("theme", "primaryColor"));
 			_MenuLabel = new TextField(stage.stageWidth, 200, "BOULDERING!", textFormat);
 			addChild(_MenuLabel);
 			
 			var texture:Texture = Texture.fromColor(stage.stageWidth, 200, 0x000000, 0.0);
 			_playBtn = new Button(texture, "CLICK HERE TO PLAY");
-			_playBtn.textFormat = new TextFormat("PermanentMarker", 52, 0x8CFB86);
+			_playBtn.textFormat = new TextFormat("PermanentMarker", Config.getNumber("theme", "btnSize"), Config.getColor("theme", "secondaryColor"));
 			addChild(_playBtn);
 			_playBtn.y = stage.stageHeight - _playBtn.height;
 			

@@ -21,7 +21,6 @@ package core {
 		public static const GRABBED_GRIP_EVENT:String = "GRABBED_GRIP_EVENT";
 		public static const STRENGHT_PERCENTAGE_CHANGED:String = "STRENGHT_PERCENTAGE_CHANGED";
 		
-		
 		public static var DISPATCHER:EventDispatcher = new EventDispatcher();
 		
 		private static var _cache:Object = {};
@@ -59,12 +58,6 @@ package core {
 			}
 			_cache[nodeKey] = values.toString();
 			return _cache[nodeKey];
-		}
-		
-		public static function getLevel(id:Number):Level {
-			var values:XMLList = Config._data["level"].(@id == id.toString());
-			var level:Level = new Level(id, values.attribute("height"), values.attribute("width"), values.attribute("grips"));
-			return level;
 		}
 		
 		public static function getString(node:String, attribute:String):String {

@@ -14,7 +14,7 @@ package GUI {
 		
 		public function InstructionsFrame() {
 			
-			var textFormat:TextFormat = new TextFormat("PermanentMarker", 38, 0x00B1BB);
+			var textFormat:TextFormat = new TextFormat("PermanentMarker",  Config.getNumber("theme", "textSize"), Config.getColor("theme", "extraColor"));
 			var _label:TextField = new TextField(Config.WORLD_WIDTH, 100, "DRAG AND DROP HANDS AND FEETS", textFormat);
 			_label.alignPivot();
 			_label.y = -_label.height;

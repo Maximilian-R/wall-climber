@@ -18,7 +18,7 @@
 	<kneeJoint lowerLimit="1" upperLimit="100" />
 	<ankleJoint lowerLimit="20" upperLimit="60" />
 	
+	<wall grips="30" gridSize="10" />
+	<theme primaryColor="0xFF9A35" secondaryColor="0x8CFB86" extraColor="0x00B1BB" headLineSize="72"  btnSize="52" textSize="38" />
 	
-	
-	<level id="1" height="2000" width="600" grips="30" />
 </settings>

@@ -43,7 +43,6 @@ package gameobjects {
 			_strengthDrain =  Config.getNumber("character", "strengthDrain");
 			_percentageStrenght = 100;
 			
-			
 			var startX:Number = (Config.WORLD_WIDTH * 0.5) / Config.WORLD_SCALE;
 			var startY:Number =  (Config.WORLD_HEIGHT * 0.5) / Config.WORLD_SCALE;
 			
@@ -90,8 +89,6 @@ package gameobjects {
 			_grabableBodies.push(leftFoot, rightFoot, rightHand, leftHand);
 			
 			/* ------------------------ Joints --------------------------- */
-			
-			
 			
 			setupJoint( -40, 40, _head, _torso1, startX, startY + neckMargin/2);
 			setupJoint( -15, 15, _torso1, torso2, startX, startY + (80 / Config.WORLD_SCALE));

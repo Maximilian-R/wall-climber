@@ -1,4 +1,5 @@
 package GUI {
+	import core.Config;
 	import core.WallOfFame;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -14,7 +15,7 @@ package GUI {
 			var image:Image = new Image(redLine);
 			addChild(image);
 			
-			var format:TextFormat = new TextFormat("PermanentMarker", 30, 0x8CFB86,Align.LEFT);
+			var format:TextFormat = new TextFormat("PermanentMarker",  Config.getNumber("theme", "textSize"), Config.getColor("theme", "secondaryColor"), Align.LEFT);
 			var label:TextField = new TextField(width, 100, "HIGHSCORE", format);
 			addChild(label);
 			

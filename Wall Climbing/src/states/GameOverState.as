@@ -43,11 +43,11 @@ package states {
 			
 			WallOfFame.addScore(_score);
 			
-			var textFormat:TextFormat = new TextFormat("PermanentMarker", 72, 0xFF9A35);
+			var textFormat:TextFormat = new TextFormat("PermanentMarker", Config.getNumber("theme", "headLineSize"), Config.getColor("theme", "primaryColor"));
 			_gameOverLabel = new TextField(stage.stageWidth, 200, "GAME OVER", textFormat);
 			addChild(_gameOverLabel);
 			
-			textFormat = new TextFormat("PermanentMarker", 52, 0x00B1BB);
+			textFormat = new TextFormat("PermanentMarker", Config.getNumber("theme", "btnSize"), Config.getColor("theme", "secondaryColor"));
 			_scoreLabel = new TextField(stage.stageWidth, 100, "YOUR SCORE: " + _score + "M", textFormat);
 			addChild(_scoreLabel);
 			
@@ -57,7 +57,7 @@ package states {
 			_scoreLabel.y = _gameOverLabel.height;
 			_highScoreLabel.y = _scoreLabel.y + _scoreLabel.height;
 			
-			textFormat = new TextFormat("PermanentMarker", 52, 0x8CFB86);
+			textFormat = new TextFormat("PermanentMarker", Config.getNumber("theme", "btnSize"), Config.getColor("theme", "extraColor"));
 			_playAgainLabel = new TextField(stage.stageWidth, 100, "ENTER TO PLAY AGAIN", textFormat);
 			addChild(_playAgainLabel);
 			_playAgainLabel.y = stage.stageHeight - _playAgainLabel.height;
